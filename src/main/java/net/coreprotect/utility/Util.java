@@ -11,6 +11,7 @@ import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +21,8 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -50,6 +53,8 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.io.BukkitObjectOutputStream;
+import org.jutils.jhardware.HardwareInfo;
+import org.jutils.jhardware.model.ProcessorInfo;
 
 import net.coreprotect.CoreProtect;
 import net.coreprotect.bukkit.BukkitAdapter;
@@ -109,6 +114,19 @@ public class Util extends Queue {
         }
 
         return name;
+    }
+
+    public static ProcessorInfo getProcessorInfo() {
+        ProcessorInfo result = null;
+        try {
+            Configurator.setLevel("com.profesorfalken.jsensors.manager.unix.UnixSensorsManager", Level.WARN);
+            result = HardwareInfo.getProcessorInfo();
+        }
+        catch (Exception e) {
+            // unable to read processor information
+        }
+
+        return result;
     }
 
     public static int getBlockId(Material material) {
@@ -639,6 +657,33 @@ public class Util extends Queue {
         }
 
         return result;
+    }
+
+    public static ItemStack[] sortContainerState(ItemStack[] array) {
+        if (array == null) {
+            return null;
+        }
+
+        ItemStack[] sorted = new ItemStack[array.length];
+        Map<String, ItemStack> map = new HashMap<>();
+        for (ItemStack itemStack : array) {
+            if (itemStack == null) {
+                continue;
+            }
+
+            map.put(itemStack.toString(), itemStack);
+        }
+
+        ArrayList<String> sortedKeys = new ArrayList<>(map.keySet());
+        Collections.sort(sortedKeys);
+
+        int i = 0;
+        for (String key : sortedKeys) {
+            sorted[i] = map.get(key);
+            i++;
+        }
+
+        return sorted;
     }
 
     /* return true if ItemStack[] contents are identical */
