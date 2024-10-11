@@ -27,7 +27,7 @@ jobs:
       - name: Build
         run: mvn clean package
       - name: capture build artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: Artifacts
           path: target/
