@@ -4,7 +4,7 @@
   <artifactId>CoreProtect</artifactId>
   <version>22.4</version>
   <properties>
-    <project.branch></project.branch>
+    <development></development>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <skipTests>true</skipTests>
     <maven.compiler.source>11</maven.compiler.source>
